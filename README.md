@@ -11,13 +11,22 @@ Utilities for a stateless, serverless development environment.
 
 ##### Usage:
 
-```
+```sh
 npm install --save-dev git://github.com/jordwalke/file-driven-development.git
 ./node_modules/file-driven-development/openLocal.sh reuseSearchPattern openFileUrl
 ```
 
+Typicaly, you would run a command like:
+
+
 - `reuseSearchPattern` is the pattern used to search for existing tabs in the dedicated Chrome instance in order to reuse them.
 - `openFileUrl` is the file url that you wish to open if it cannot reuse the existing tab (discovered by `reuseSearchPattern`).
+
+```sh
+./node_modules/file-driven-development/openLocal.sh /myPath/foo.html file:///myPath/foo.html
+```
+
+The search string is intentionally not the same as the file path that is opened, because you may want to be a little more loose with the matching to an existing tab. 
 
 ##### Caution:
 
