@@ -15,12 +15,15 @@ Utilities for a stateless, serverless development environment.
 
 ```sh
 npm install --save-dev git://github.com/jordwalke/file-driven-development.git
-osascript ./node_modules/file-driven-development/openLocal.osa reuseSearchPattern openFileUrl
+osascript path/to/openLocal.osa reuseSearchPattern openFileUrl useCanary
 ```
 
 
+- `path/to/openLocal.osa` Path to where `openLocal.osa` was installed
+  (typically in `node_modules`).
 - `reuseSearchPattern` is the pattern used to search for existing tabs in the dedicated Chrome instance in order to reuse them.
 - `openFileUrl` is the file url that you wish to open if it cannot reuse the existing tab (discovered by `reuseSearchPattern`).
+- `useCanary` whether or not to use Chrome Canary.
 
 
 Typicaly, you would run a command like:
