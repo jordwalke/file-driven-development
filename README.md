@@ -1,2 +1,24 @@
 # file-driven-development
 Utilities for a stateless, serverless development environment.
+
+
+## Goals
+- Open resources in the browser.
+  - Remove the need to manage development/build servers.
+  - Refocus existing resources when they are already open.
+- Develop local web applications without needing to host a server, while still being able to make `XMLHTTPRequest`s to your local file system. Normally Chrome will block this ability by default because they believe it poses a security risk to have it enabled by default.
+  - `file-driven-development` has a script `localOpen.sh` which opens up a dedicated Chrome instance with this restriction disabled, and therefore allows you to load local `.html` files, which can make requests back to the file system. This is intentionally a dedicated Chrome instance - for local, file system driven development, apart from your other normal Chrome browsing instance, because you don't want to disable this `XMLHTTPRequest` for general browsing.
+
+##### Usage:
+
+```
+npm install --save-dev git://github.com/jordwalke/file-driven-development.git
+./node_modules/file-driven-development/openLocal.sh reuseSearchPattern openFileUrl
+```
+
+- `reuseSearchPattern` is the pattern used to search for existing tabs in the dedicated Chrome instance in order to reuse them.
+- `openFileUrl` is the file url that you wish to open if it cannot reuse the existing tab (discovered by `reuseSearchPattern`).
+
+##### Caution:
+
+Be aware of the implications of browsing the internet with the relaxed `XMLHTTPRequest` for local file system access. Only use the dedicated Chrome instance that opens for local file system development, and don't later use that running Chrome instance to browse the general internet. You are responsible for safe browsing, so make sure you understand what the scripts in `file-driven-development` are doing.
