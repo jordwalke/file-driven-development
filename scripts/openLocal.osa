@@ -1,0 +1,113 @@
+-- https://gist.github.com/mayoff/1138816#gistcomment-1821795
+-- Defaults to opening Chrome, but we should make a substitute for Canary:
+--  if it is installed.
+-- Does not let you supply URLS of *non* local files since it disables
+--   XMLHttpRequest restrictions.
+
+-- The following does not work (Does anyone know how to make it work?)
+
+
+on run argv
+  if (count of argv) > 1 then
+    set urlMatchString to item 1 of argv
+    set targetUrl to item 2 of argv
+  else
+    set title to "\n\nERROR: Incorrect Usage:\n"
+    set incorrectness to "  Must pass at least two arguments: (You passed " & count of argv & ")\n"
+    set usage to "  Usage:\n\n    osascript openLocal.osa searchString file:///path/to/file.html\n\n"
+    error title & incorrectness & usage
+  end if
+  if (count of argv) > 2  and (item 3 of argv equals "1" or item 3 of argv equals "true") then
+    set useCanary to true
+  else
+    set useCanary to false
+  end if
+
+  set chromeName to "Google Chrome"
+  set chromeEscapedName to "Google\\ Chrome"
+  set tmpSandboxName to "developmentChromeStandard"
+  if useCanary then
+    set chromeName to "Google Chrome Canary"
+    set chromeEscapedName to "Google\\ Chrome\\ Canary"
+    set tmpSandboxName to "developmentChromeCanary"
+  end if
+  if (targetUrl does not begin with "file://") then
+    set title to "\n\nERROR: Incorrect Usage:\n"
+    set incorrectness to "  Specified URL ('" & targetUrl & "') does not begin with 'file:///'\n"
+    set usage to "  Usage:\n\n    osascript openLocal.osa searchString file:///path/to/file.html\n\n"
+    error title & incorrectness & usage
+  end if
+  
+
+  tell application "System Events"
+    set theprocId to "0"
+    set theprocId to do shell script "pgrep -f 'Chrome.*" & tmpSandboxName & ".*allow-file-access-from' || echo 0 | grep -m1 ''"
+    if (theprocId is equal to "0")
+      do shell script "open -n -a " & chromeEscapedName & " --args --no-startup-window --no-first-run --user-data-dir=/tmp/" & tmpSandboxName & " --allow-file-access-from-files --silent-launch &"
+      set theprocId to do shell script "pgrep -f 'Chrome.*" & tmpSandboxName & ".*allow-file-access-from' || echo 0 | grep -m1 ''"
+    end if
+    set frontmost of every process whose unix id is theprocId to true
+  end tell
+
+  -- I do not know how to remove this boilerplate copy/paste. AppleScript doesn't allow
+  -- dynamically computing application name it seems.
+  if useCanary then
+    tell application "Google Chrome Canary"
+      if (count every window) = 0 then
+          make new window
+          open location targetUrl
+      else
+        set found to false
+        set theTabIndex to -1
+        repeat with theWindow in every window
+          set theTabIndex to 0
+          repeat with theTab in every tab of theWindow
+            set theTabIndex to theTabIndex + 1
+            set theTabUrl to (theTab's URL as string)
+            if (theTabUrl contains urlMatchString) then
+              set found to true
+              exit repeat
+            end if
+          end repeat
+          if found then
+            exit repeat
+          end if
+        end repeat
+        if found then
+          tell theTab to reload
+          set theWindow's active tab index to theTabIndex
+          set index of theWindow to 1
+        end if
+      end if
+    end tell
+  else
+    tell application "Google Chrome"
+      if (count every window) = 0 then
+          make new window
+          open location targetUrl
+      else
+        set found to false
+        set theTabIndex to -1
+        repeat with theWindow in every window
+          set theTabIndex to 0
+          repeat with theTab in every tab of theWindow
+            set theTabIndex to theTabIndex + 1
+            set theTabUrl to (theTab's URL as string)
+            if (theTabUrl contains urlMatchString) then
+              set found to true
+              exit repeat
+            end if
+          end repeat
+          if found then
+            exit repeat
+          end if
+        end repeat
+        if found then
+          tell theTab to reload
+          set theWindow's active tab index to theTabIndex
+          set index of theWindow to 1
+        end if
+      end if
+    end tell
+  end if
+end run

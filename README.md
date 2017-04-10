@@ -1,6 +1,8 @@
 # file-driven-development
 Utilities for a stateless, serverless development environment.
 
+## Operating System:
+- Mac OS currently.
 
 ## Goals
 - Open resources in the browser.
@@ -13,7 +15,7 @@ Utilities for a stateless, serverless development environment.
 
 ```sh
 npm install --save-dev git://github.com/jordwalke/file-driven-development.git
-./node_modules/file-driven-development/openLocal.sh reuseSearchPattern openFileUrl
+osascript ./node_modules/file-driven-development/openLocal.osa reuseSearchPattern openFileUrl
 ```
 
 
@@ -24,7 +26,7 @@ npm install --save-dev git://github.com/jordwalke/file-driven-development.git
 Typicaly, you would run a command like:
 
 ```sh
-./node_modules/file-driven-development/openLocal.sh /myPath/foo.html file:///myPath/foo.html
+osascript ./node_modules/file-driven-development/openLocal.osa /myPath/foo.html file:///myPath/foo.html
 ```
 
 The search string is intentionally not the same as the file path that is opened, because you may want to be a little more loose with the matching to an existing tab. 
@@ -32,3 +34,10 @@ The search string is intentionally not the same as the file path that is opened,
 ##### Caution:
 
 Be aware of the implications of browsing the internet with the relaxed `XMLHTTPRequest` for local file system access. Only use the dedicated Chrome instance that opens for local file system development, and don't later use that running Chrome instance to browse the general internet. You are responsible for safe browsing, so make sure you understand what the scripts in `file-driven-development` are doing.
+
+
+##### Credit:
+
+Original Script inspired by Rob Mayoff's
+[https://gist.github.com/mayoff/1138816](script), but it may likely diverge
+significantly over time.
