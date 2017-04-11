@@ -77,6 +77,8 @@ on run argv
           tell theTab to reload
           set theWindow's active tab index to theTabIndex
           set index of theWindow to 1
+        else
+          tell window 1 to make new tab with properties {URL:targetUrl}
         end if
       end if
     end tell
@@ -106,6 +108,8 @@ on run argv
           tell theTab to reload
           set theWindow's active tab index to theTabIndex
           set index of theWindow to 1
+        else
+          tell window 1 to make new tab with properties {URL:targetUrl}
         end if
       end if
     end tell
