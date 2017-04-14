@@ -16,6 +16,7 @@
     "serverless"
   ],
   "bin": {
+    "openLocalCanary.osa": "./scripts/openLocalCanary.osa",
     "openLocal.osa": "./scripts/openLocal.osa"
   },
   "author": "",
