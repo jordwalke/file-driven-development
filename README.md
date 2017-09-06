@@ -29,7 +29,7 @@ osascript path/to/openLocal.osa reuseSearchPattern openFileUrl useCanary
 Typicaly, you would run a command like:
 
 ```sh
-osascript ./node_modules/file-driven-development/openLocal.osa /myPath/foo.html file:///myPath/foo.html
+osascript ./node_modules/file-driven-development/scripts/openLocal.osa /myPath/foo.html file:///myPath/foo.html
 ```
 
 The search string is intentionally not the same as the file path that is opened, because you may want to be a little more loose with the matching to an existing tab. 
